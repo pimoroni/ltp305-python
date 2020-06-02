@@ -127,6 +127,33 @@ class LTP305:
                 c = char[cx] & (0b1 << cy)
                 self.set_pixel(x + cx, cy, c)
 
+    def get_shape(self):
+        """Set the width/height of the display."""
+        return 10, 7
+
+    def set_image(self, image, offset_x=0, offset_y=0, wrap=False, bg=0):
+        """Set a PIL image to the display buffer."""
+        image_width, image_height = image.size
+
+        if image.mode != "1":
+            image = image.convert("1")
+
+        display_width, display_height = self.get_shape()
+
+        for y in range(display_height):
+            for x in range(display_width):
+                p = bg
+                i_x = x + offset_x
+                i_y = y + offset_y
+                if wrap:
+                    while i_x >= image_width:
+                        i_x -= image_width
+                    while i_y >= image_height:
+                        i_y -= image_height
+                if i_x < image_width and i_y < image_height:
+                    p = image.getpixel((i_x, i_y))
+                self.set_pixel(x, y, p)
+
     def show(self):
         """Update the LED matrixes from the buffer."""
         self.bus.write_i2c_block_data(self.address, CMD_MATRIX_L, self._buf_matrix_left)
