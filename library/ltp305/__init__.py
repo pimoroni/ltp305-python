@@ -1,5 +1,5 @@
 import smbus
-from .font import tinynumbers, font
+from .font import font
 
 
 MODE = 0b00011000
