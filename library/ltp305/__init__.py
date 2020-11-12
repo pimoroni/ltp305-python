@@ -2,6 +2,9 @@ import smbus
 from .font import font
 
 
+__version__ = '0.0.1'
+
+
 MODE = 0b00011000
 OPTS = 0b00001110  # 1110 = 35mA, 0000 = 40mA
 
